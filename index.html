@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <title>Mapa Moinho Anaconda</title>
+    <script src="https://unpkg.com/@panzoom/panzoom/dist/panzoom.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mermaid/10.6.1/mermaid.min.js"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+
+<body>
+    <div class="p-4 bg-white shadow-sm">
+        <div class="flex justify-center">
+            <img src="https://upsites.digital/wp-content/uploads/2023/01/logo.png" class="w-32 h-auto"
+                alt="Logo UpSites">
+        </div>
+    </div>
+
+    <div class="p-8 flex justify-center items-center min-h-[calc(100vh-160px)]" role="main">
+        <div class="bg-white rounded-xl shadow-xl overflow-hidden w-full max-w-7xl p-8 relative">
+            <div id="mermaid-container" class="border border-gray-100 rounded-lg p-4">
+                <div id="panzoom-wrapper" class="cursor-grab active:cursor-grabbing" style="transform-origin: 0 0;">
+                    <div class="mermaid">
+                        ---
+                        config:
+                            themeCSS: |
+                                @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap');
+                                * {
+                                    font-family: 'Inter', sans-serif;
+                                }
+                        ---
+                        flowchart TD
+                        %% Subgraph Principal (Diagrama do Sitemap)
+                        subgraph Diagrama_Principal[Moinho Anaconda]
+                            Cliente( ):::sumir
+                            Cliente~~~m1(Home):::pagInclusa
+                            Cliente~~~m2(Produtos):::pagInclusa
+                            Cliente~~~m3(Receitas):::blog
+                            Cliente~~~m4(Contato):::pagInclusa
+                            Cliente~~~m5(Representantes):::cpt
+                            Cliente~~~m6(Trabalhe Conosco):::pagInclusa
+                            Cliente~~~m7(Institucional):::nep
+
+                            m2-->m2_1(Uso Geral):::pagextramd
+                            m2-->m2_2(Especialidades):::pagextrafl
+                            m2-->m2_3(Pré-Misturas):::pagextrafl
+                            m2-->m2_4(Profissional):::pagextrafl
+
+                            m7-->m7_1(Fornecedores):::pagextrasp
+                            m7_1-->m7_2(Onde estamos):::pagextrasp
+                            m7_2-->m7_3(Onde comprar online):::pagextrasp
+                            m7_3-->m7_4(Segurança e privacidade):::pagextrasp
+                            m7_4-->m7_5(Canal de denúnicas):::linkexterno
+                            m7_5-->m7_6(Compliance):::pagextramd
+                        end
+                        %% Subgraph Legenda (Legenda ao lado)
+                            subgraph Legenda["Legenda"]
+                                direction LR
+                                legPagInclusa(Pagina Inclusa):::pagInclusa
+                                legLinkExterno(Link Externo):::linkexterno
+                                legNep(Apenas item de menu):::nep
+                                legCpt(Custom post Type):::cpt
+                                legBlog(Notícias ou Blog):::blog
+                                legPagExtraCp(Página extra complexa):::pagextracp
+                                legPagExtraMd(Página extra média):::pagextramd
+                                legPagExtraSp(Página extra simples):::pagextrasp
+                                legPagExtrafl(Página extra Filho):::pagextrafl
+                            end
+
+                            %% Inserção de classes
+                            class Legenda legenda
+                            class Diagrama_Principal fullchart
+                            class Diagrama_Principal titulo_mapa
+                            class Legenda leg
+                            %% Definição de Classes
+                            classDef titulo font-size:30px, font-weight:bold;
+                            classDef default fill:#d2d2d2,stroke-width:0px;
+                            classDef pagInclusa fill:#ffe800,stroke-width:0px,color:#000;
+                            classDef nep fill:#f2f2f2, stroke:#000, color:#000, stroke-width:1px;
+                            classDef linkexterno fill:#ffffff, stroke:#d2d2d2, stroke-width:1px,color:#000;
+                            classDef cpt fill:#c903c9, color:#fff;
+                            classDef blog fill:#ff9900, color:#fff;
+                            classDef pagextracp fill:#cc0000, color:#fff;
+                            classDef pagextramd fill:#4a86e8, color:#fff;
+                            classDef pagextrasp fill:#45818e, color:#fff;
+                            classDef pagextrafl fill:#93c47d, color:#fff;
+                            classDef fullchart stroke:#fff, fill:transparent;
+                            classDef legenda stroke:#000000, fill:transparent;
+                            classDef leg font-weight:bold, font-size:20px
+                            classDef titulo_mapa font-weight:bold, font-size:25px
+                            classDef sumir fill:transparent
+                    </div>
+                </div>
+            </div>
+
+            <div class="mt-6 text-sm text-gray-600 text-center">
+                🖱️ Arraste para mover o diagrama<br>
+                Ctrl + Scroll do mouse para zoom
+            </div>
+        </div>
+    </div>
+
+    <script>
+        window.addEventListener('load', function () {
+            mermaid.initialize({ startOnLoad: true });
+
+            setTimeout(() => {
+                const element = document.getElementById('panzoom-wrapper');
+
+                if (typeof Panzoom !== 'undefined') {
+                    const panzoomInstance = Panzoom(element, {
+                        maxScale: 2.5,
+                        minScale: 0.75,
+                        step: 0.03,        // Define incremento do zoom mais suave
+                        zoomSpeed: 0.05,   // Velocidade do zoom mais suave
+                        smoothScale: true,
+                        beforeWheel: function (e) {
+                            if (e.ctrlKey) {
+                                e.preventDefault();
+                                return false;
+                            }
+                        }
+                    });
+
+                    // Adiciona o listener para o zoom com ctrl+wheel
+                    element.addEventListener('wheel', function (e) {
+                        if (e.ctrlKey) {
+                            e.preventDefault();
+                            const delta = e.deltaY;
+                            if (delta > 0) {
+                                panzoomInstance.zoomOut(null, { step: 0.15 });
+                            } else {
+                                panzoomInstance.zoomIn(null, { step: 0.15 });
+                            }
+                        }
+                    });
+                }
+            }, 1000);
+        });
+    </script>
+
+    <footer class="text-center p-4">
+        © 2024 UpSites - Todos os direitos reservados.
+    </footer>
+</body>
+
+</html>
